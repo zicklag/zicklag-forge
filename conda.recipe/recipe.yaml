@@ -30,6 +30,7 @@ requirements:
     - ${{ cdt('libxcb') }}
   host:
     - glew
+    - eigen
     - kernel-headers_linux-64
     - wayland
     - libxkbcommon
