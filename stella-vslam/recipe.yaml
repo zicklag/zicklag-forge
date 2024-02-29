@@ -18,6 +18,7 @@ build:
     cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF \
           -DCMAKE_PREFIX_PATH=${PREFIX} \
           -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+          -DCMAKE_SHARED_LINKER_FLAGS="-L${PREFIX}/lib" \
           ${SRC_DIR}
     make -j${CPU_COUNT} install
 
