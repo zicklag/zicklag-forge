@@ -1,0 +1,56 @@
+context:
+  version: "0.5.0"
+
+package:
+  name: stella-vslam
+  version: ${{ version }}
+
+source:
+  git: https://github.com/stella-cv/stella_vslam.git
+  tag: ${{version}}
+
+build:
+  number: 0
+  script: |
+    git submodule update --init --recursive --recommend-shallow
+    mkdir build
+    cd build
+    cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF \
+          -DCMAKE_PREFIX_PATH=${PREFIX} \
+          -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+          ${SRC_DIR}
+    make -j${CPU_COUNT} install
+
+requirements:
+  build:
+    - git
+    - gxx=11
+    - cmake=3.21
+    - ${{ cdt('mesa-libgl-devel') }}
+  host:
+    - g2o=2019.11.23
+    - suitesparse=5.10
+    - eigen=3.4
+    - yaml-cpp=0.8
+    - opencv=4.9
+
+about:
+  homepage: https://github.com/stella-cv/stella_vslam
+  repository: https://github.com/stella-cv/stella_vslam
+  license: MIT
+  license_file: LICENSE
+  summary: This is a unofficial fork of OpenVSLAM (https://github.com/xdspacelab/openvslam)
+  description: |
+    The notable features are:
+
+    It is compatible with various type of camera models and can be easily customized for other camera models.
+    Created maps can be stored and loaded, then stella_vslam can localize new images based on the prebuilt maps.
+    The system is fully modular. It is designed by encapsulating several functions in separated components with easy-to-understand APIs.
+    We provided some code snippets to understand the core functionalities of this system.
+    One of the noteworthy features of stella_vslam is that the system can deal with various type of camera models, such as perspective, fisheye, and equirectangular.
+    If needed, users can implement extra camera models (e.g. dual fisheye, catadioptric) with ease. For example, visual SLAM algorithm using equirectangular camera models
+    (e.g. RICOH THETA series, insta360 series, etc) is shown above.
+
+extra:
+  recipe-maintainers:
+    - zicklag
