@@ -1,6 +1,7 @@
 name: pangolin
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - pangolin/**
