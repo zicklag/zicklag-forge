@@ -1,0 +1,47 @@
+context:
+  version: "c925ef9"
+
+package:
+  name: fbow-stella
+  version: ${{ version }}
+
+source:
+  git: https://github.com/stella-cv/FBoW.git
+  rev: c925ef9d444c39d2967791b8c08bf3dfda9c4e1c
+
+build:
+  number: 0
+  script: |
+    mkdir build
+    cd build
+    cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF -DBUILD_UTILS=OFF \
+          -DCMAKE_PREFIX_PATH=${PREFIX} \
+          -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+          ${SRC_DIR}
+    make -j${CPU_COUNT} install
+
+requirements:
+  build:
+    - gxx=11
+    - cmake
+  host:
+    - pocl
+    - opencv
+
+about:
+  homepage: https://github.com/stella-cv/FBoW
+  repository: https://github.com/stevenlovegrove/Pangolin
+  license: MIT
+  license_file: LICENSE
+  summary: Heavily optimized Fast Bag of Words ( FBoW ) implementation.
+  description: |
+    This is a modified version of the original Fast Bag of Words by @rmsalinas.
+
+    FBoW (Fast Bag of Words) is an extremely optimized version of the DBoW2/DBoW3 libraries.
+    The library is highly optimized to speed up the Bag of Words creation using AVX,SSE and MMX instructions.
+    In loading a vocabulary, FBoW is about 80x faster than DBoW2.
+    In transforming an image into Bag of Words using on machines with AVX instructions, it is about 6.4x faster.
+
+extra:
+  recipe-maintainers:
+    - zicklag
