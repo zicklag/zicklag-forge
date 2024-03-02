@@ -1,0 +1,17 @@
+Subject: Don't link to GL library using the full path, which will be different at runtime.
+         This fixes an issue libraries depending on this one will have the full path to
+         libGL.so added as a makefile target dependency, which will fail, resulting in errors
+         like: "No rule to make target /path/to/bld/rattler-build-etc-etc/.../libGL.so"
+---
+diff --git a/components/pango_opengl/CMakeLists.txt b/components/pango_opengl/CMakeLists.txt
+index 7b04bf7f..51afff3c 100644
+--- a/components/pango_opengl/CMakeLists.txt
++++ b/components/pango_opengl/CMakeLists.txt
+@@ -49,6 +49,6 @@ else()
+         $<BUILD_INTERFACE:${GLEW_INCLUDE_DIR}>
+     )
+     target_link_libraries( ${COMPONENT} PUBLIC
+-        ${GLEW_LIBRARY} ${OPENGL_LIBRARIES}
++        ${GLEW_LIBRARY} GL
+     )
+ endif()

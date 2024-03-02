@@ -1,0 +1,44 @@
+context:
+  version: "0.0.1"
+
+package:
+  name: stella-vslam-examples
+  version: ${{ version }}
+
+source:
+  git: https://github.com/stella-cv/stella_vslam_examples.git
+  tag: ${{version}}
+
+build:
+  number: 0
+  script: |
+    mkdir build
+    cd build
+    export LDFLAGS="${LDFLAGS} -Wl,--allow-shlib-undefined"
+    cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF \
+          -DCMAKE_PREFIX_PATH=${PREFIX} \
+          -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+          ${SRC_DIR}
+    make -j${CPU_COUNT}
+    mv run_*_slam ${PREFIX}/bin
+
+requirements:
+  build:
+    - git
+    - gxx=11
+    - cmake=3.21
+    - ${{ cdt('mesa-libgl-devel') }}
+  host:
+    - stella-vslam
+    - stella-vslam-pangolin-viewer
+
+about:
+  homepage: https://github.com/stella-cv/stella_vslam_examples
+  repository: https://github.com/stella-cv/stella_vslam_examples
+  license: MIT
+  license_file: LICENSE
+  summary: Example binaries for stella_vslam.
+
+extra:
+  recipe-maintainers:
+    - zicklag

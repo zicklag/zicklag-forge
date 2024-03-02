@@ -8,9 +8,11 @@ package:
 source:
   url: https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v${{ version }}.tar.gz
   sha256: cc6c5fbd81a9dc40dac220ef57e46d7db0c1deb6d6ae62ba7f685c68c100119f
+  patches:
+    - findopengl.patch
 
 build:
-  number: 1
+  number: 2
   script: |
     mkdir build
     cd build
@@ -19,11 +21,15 @@ build:
           -DCMAKE_INSTALL_PREFIX=${PREFIX} \
           -DGLEW_INCLUDE_DIR=${PREFIX}/include \
           -DGLEW_LIBRARY=$PREFIX/lib/libGLEW.so \
+          -DCMAKE_SKIP_BUILD_RPATH=TRUE \
           ${SRC_DIR}
     make -j${CPU_COUNT} install
 
 requirements:
   build:
+    - cmake
+    - make
+    - gxx
     - ${{ compiler('cxx') }}
     - ${{ cdt('mesa-libgl-devel') }}
     - ${{ cdt('mesa-libegl-devel') }}
@@ -34,6 +40,8 @@ requirements:
     - kernel-headers_linux-64
     - wayland
     - libxkbcommon
+  run_exports:
+    - pangolin=${{version}}
 
 about:
   homepage: https://github.com/stevenlovegrove/Pangolin

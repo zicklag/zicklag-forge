@@ -12,13 +12,14 @@ source:
 build:
   number: 0
   script: |
-    git submodule update --init --recursive --recommend-shallow
     mkdir build
     cd build
+    export LDFLAGS="${LDFLAGS} -Wl,--allow-shlib-undefined -Wl,--no-as-needed"
     cmake ${CMAKE_ARGS} \
           -DCMAKE_PREFIX_PATH=${PREFIX} \
           -DCMAKE_INSTALL_PREFIX=${PREFIX} \
           -DCMAKE_SHARED_LINKER_FLAGS="-L${PREFIX}/lib" \
+          -DOPENGL_opengl_LIBRARY:FILEPATH=${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64/libGL.so \
           ${SRC_DIR}
     make -j${CPU_COUNT} install
 
@@ -27,13 +28,15 @@ requirements:
     - git
     - gxx=11
     - cmake=3.21
+    - make=4.3
     - ${{ cdt('mesa-libgl-devel') }}
   host:
     - pangolin=0.9
     - stella-vslam=0.5
     - eigen=3.4
     - opencv=4.9
-
+  run_exports:
+    - stella-vslam-pangolin-viewer
 
 about:
   homepage: https://github.com/stella-cv/pangolin_viewer

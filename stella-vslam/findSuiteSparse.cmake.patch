@@ -1,0 +1,36 @@
+diff --git a/cmake/FindSuiteSparse.cmake b/cmake/FindSuiteSparse.cmake
+index 47fd27c..bc0fdd2 100644
+--- a/cmake/FindSuiteSparse.cmake
++++ b/cmake/FindSuiteSparse.cmake
+@@ -334,18 +334,19 @@ if (EXISTS ${SUITESPARSE_CONFIG_LIBRARY} AND
+     # timing by default when compiled on Linux or Unix, but not on OSX (which
+     # does not have librt).
+     if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR UNIX AND NOT APPLE)
+-        find_library(LIBRT_LIBRARY NAMES rt
+-                PATHS ${SUITESPARSE_CHECK_LIBRARY_DIRS})
+-        if (LIBRT_LIBRARY)
+-            message(STATUS "Adding librt: ${LIBRT_LIBRARY} to "
+-                    "SuiteSparse_config libraries (required on Linux & Unix [not OSX] if "
+-                    "SuiteSparse is compiled with timing).")
+-        else (LIBRT_LIBRARY)
+-            message(STATUS "Could not find librt, but found SuiteSparse_config, "
+-                    "assuming that SuiteSparse was compiled without timing.")
+-        endif (LIBRT_LIBRARY)
+-        mark_as_advanced(LIBRT_LIBRARY)
+-        list(APPEND SUITESPARSE_CONFIG_LIBRARY ${LIBRT_LIBRARY})
++        list(APPEND SUITESPARSE_CONFIG_LIBRARY, "rt")
++        # find_library(LIBRT_LIBRARY NAMES rt
++        #         PATHS ${SUITESPARSE_CHECK_LIBRARY_DIRS})
++        # if (LIBRT_LIBRARY)
++        #     message(STATUS "Adding librt: ${LIBRT_LIBRARY} to "
++        #             "SuiteSparse_config libraries (required on Linux & Unix [not OSX] if "
++        #             "SuiteSparse is compiled with timing).")
++        # else (LIBRT_LIBRARY)
++        #     message(STATUS "Could not find librt, but found SuiteSparse_config, "
++        #             "assuming that SuiteSparse was compiled without timing.")
++        # endif (LIBRT_LIBRARY)
++        # mark_as_advanced(LIBRT_LIBRARY)
++        # list(APPEND SUITESPARSE_CONFIG_LIBRARY ${LIBRT_LIBRARY})
+     endif (CMAKE_SYSTEM_NAME MATCHES "Linux" OR UNIX AND NOT APPLE)
+
+ else (EXISTS ${SUITESPARSE_CONFIG_LIBRARY} AND
