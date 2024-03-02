@@ -1,0 +1,27 @@
+context:
+  version: 67198d2
+
+package:
+  name: tinycolormap
+  version: ${{version}}
+
+source:
+  git: https://github.com/yuki-koyama/tinycolormap.git
+  rev: 67198d2b2b48ca5e97600c83b5c0f2310cfd4c03
+
+build:
+  number: 1
+  script: |
+    mkdir ${PREFIX}/include
+    cp ${SRC_DIR}/include/tinycolormap.hpp ${PREFIX}/include
+
+about:
+  homepage: https://github.com/yuki-koyama/tinycolormap
+  repository: https://github.com/yuki-koyama/tinycolormap
+  license: MIT
+  license_file: LICENSE
+  summary: A header-only, single-file library for colormaps written in C++11
+
+extra:
+  recipe-maintainers:
+    - zicklag

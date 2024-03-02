@@ -1,24 +1,24 @@
 context:
-  version: "0.5.0"
+  version: "0.0.1"
 
 package:
-  name: stella-vslam
+  name: stella-vslam-pangolin-viewer
   version: ${{ version }}
 
 source:
-  git: https://github.com/stella-cv/stella_vslam.git
+  git: https://github.com/stella-cv/pangolin_viewer.git
   tag: ${{version}}
 
 build:
   number: 0
   script: |
+    git submodule update --init --recursive --recommend-shallow
     mkdir build
     cd build
-    cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF \
+    cmake ${CMAKE_ARGS} \
           -DCMAKE_PREFIX_PATH=${PREFIX} \
           -DCMAKE_INSTALL_PREFIX=${PREFIX} \
           -DCMAKE_SHARED_LINKER_FLAGS="-L${PREFIX}/lib" \
-          -DLIBRT_LIBRARY=/lib/x86_64-linux-gnu/librt.so.1 \
           ${SRC_DIR}
     make -j${CPU_COUNT} install
 
@@ -29,20 +29,18 @@ requirements:
     - cmake=3.21
     - ${{ cdt('mesa-libgl-devel') }}
   host:
-    - g2o=2019.11.23
-    - suitesparse=5.10
+    - pangolin=0.9
+    - stella-vslam=0.5
     - eigen=3.4
-    - yaml-cpp=0.8
     - opencv=4.9
-    - tinycolormap=67198d2
-    - fbow-stella=0.0.1
+
 
 about:
-  homepage: https://github.com/stella-cv/stella_vslam
-  repository: https://github.com/stella-cv/stella_vslam
-  license: MIT
+  homepage: https://github.com/stella-cv/pangolin_viewer
+  repository: https://github.com/stella-cv/pangolin_viewer
+  license: BSD-2-Clause
   license_file: LICENSE
-  summary: This is a unofficial fork of OpenVSLAM (https://github.com/xdspacelab/openvslam)
+  summary: Pangolin viewer for https://github.com/stella-cv/stella_vslam
   description: |
     The notable features are:
 

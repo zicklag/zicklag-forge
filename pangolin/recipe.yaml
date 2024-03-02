@@ -1,46 +1,48 @@
 context:
-  version: "c925ef9"
+  version: "0.9.1"
 
 package:
-  name: fbow-stella
+  name: pangolin
   version: ${{ version }}
 
 source:
-  git: https://github.com/stella-cv/FBoW.git
-  rev: c925ef9d444c39d2967791b8c08bf3dfda9c4e1c
+  url: https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: cc6c5fbd81a9dc40dac220ef57e46d7db0c1deb6d6ae62ba7f685c68c100119f
 
 build:
-  number: 0
+  number: 1
   script: |
     mkdir build
     cd build
-    cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF -DBUILD_UTILS=OFF \
-          -DCMAKE_PREFIX_PATH=${PREFIX} \
+    cmake ${CMAKE_ARGS} -DBUILD_TESTS=OFF -DBUILD_TOOLS=OFF \
+          -DCMAKE_CXX_FLAGS="-I${PREFIX}/x86_64-conda-linux-gnu/sysroot/usr/include" \
           -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+          -DGLEW_INCLUDE_DIR=${PREFIX}/include \
+          -DGLEW_LIBRARY=$PREFIX/lib/libGLEW.so \
           ${SRC_DIR}
     make -j${CPU_COUNT} install
 
 requirements:
   build:
-    - gxx=11
-    - cmake
+    - ${{ compiler('cxx') }}
+    - ${{ cdt('mesa-libgl-devel') }}
+    - ${{ cdt('mesa-libegl-devel') }}
+    - ${{ cdt('libxcb') }}
   host:
-    - pocl
-    - opencv
+    - glew
+    - eigen
+    - kernel-headers_linux-64
+    - wayland
+    - libxkbcommon
 
 about:
-  homepage: https://github.com/stella-cv/FBoW
-  repository: https://github.com/stevenlovegrove/Pangolin
+  homepage: https://github.com/stevenlovegrove/Pangolin
   license: MIT
   license_file: LICENSE
-  summary: Heavily optimized Fast Bag of Words ( FBoW ) implementation.
-  description: |
-    This is a modified version of the original Fast Bag of Words by @rmsalinas.
-
-    FBoW (Fast Bag of Words) is an extremely optimized version of the DBoW2/DBoW3 libraries.
-    The library is highly optimized to speed up the Bag of Words creation using AVX,SSE and MMX instructions.
-    In loading a vocabulary, FBoW is about 80x faster than DBoW2.
-    In transforming an image into Bag of Words using on machines with AVX instructions, it is about 6.4x faster.
+  summary: OpenGL video display / interaction library.
+  description: Pangolin is a lightweight portable rapid development library for managing OpenGL display / interaction and abstracting video input.
+  documentation: https://github.com/stevenlovegrove/Pangolin
+  repository: https://github.com/stevenlovegrove/Pangolin
 
 extra:
   recipe-maintainers:
