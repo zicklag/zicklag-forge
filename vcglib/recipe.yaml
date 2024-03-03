@@ -1,0 +1,29 @@
+context:
+  version: '2023.12'
+
+package:
+  name: vcglib
+  version: ${{version}}
+
+source:
+  url: https://github.com/cnr-isti-vclab/vcglib/archive/refs/tags/${{version}}.tar.gz
+  sha256: 5a84db6d596be1cb4abdc450d130dc8e2224a4c7b4198b60cd9ac55f45ac5c7b
+
+build:
+  number: 0
+  script: |
+    mkdir ${PREFIX}/include
+    rm -rf ${SRC_DIR}/docs
+    rm -rf ${SRC_DIR}/apps
+    cp -r ${SRC_DIR} ${PREFIX}/include/vcg
+
+about:
+  homepage: https://vcg.isti.cnr.it/vcglib/
+  repository: https://github.com/cnr-isti-vclab/vcglib
+  license: GPL-3.0
+  license_file: LICENSE.txt
+  summary: The VCGlib is a C++, templated, no dependency, library for manipulation, processing and cleaning of triangle meshes
+
+extra:
+  recipe-maintainers:
+    - zicklag
