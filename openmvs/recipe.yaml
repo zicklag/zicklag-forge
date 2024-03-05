@@ -10,7 +10,7 @@ source:
   sha256: ac7312fb71dbab18c5b2755ad9ac3caa40ec689f6f369c330ca73c87c1f34258
 
 build:
-  number: 0
+  number: 1
   script: |
     mkdir make
     cd make
@@ -21,6 +21,9 @@ build:
           -DCMAKE_INSTALL_PREFIX=${PREFIX} \
           ${SRC_DIR}
     make -j${CPU_COUNT} install
+    rm ${PREFIX}/bin/OpenMVS/Tests
+    mv ${PREFIX}/bin/OpenMVS/* $PREFIX/bin
+    rmdir ${PREFIX}/bin/OpenMVS
 
 requirements:
   build:
@@ -37,6 +40,8 @@ requirements:
     - cgal>=4.2
     - boost>=1.56
     - vcglib=2023.12
+    - glew
+    - glfw
   run:
     - python=3.12
     - ${{ pin_compatible('libboost', exact=True) }}
