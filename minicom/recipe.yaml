@@ -1,0 +1,28 @@
+context:
+  version: '2.10'
+
+package:
+  name: minicom
+  version: ${{version}}
+
+source:
+  url: https://salsa.debian.org/minicom-team/minicom/-/archive/2.10/minicom-2.10.tar.gz
+  sha256: 66ff82661c3cc49ab2e447f8a070ec1a64ba71d64219906d80a49da284a5d43e
+
+build:
+  number: 0
+  script: |
+    ./configure --prefix=${PREFIX}
+    make
+    make install
+
+about:
+  homepage: https://salsa.debian.org/minicom-team/minicom
+  repository: https://salsa.debian.org/minicom-team/minicom
+  license: GPL-2.0
+  license_file: COPYING
+  summary: Minicom is a serial communication program
+
+extra:
+  recipe-maintainers:
+    - zicklag
